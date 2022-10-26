@@ -1,10 +1,18 @@
 import Http from 'http'
 import { UserRouter } from './routes/usersRouter.js';
+import { server_options, cors_options } from '../config.js';
 
-const port = 3000;
+const PORT = server_options.port;
 
 
 const server = Http.createServer(async function (req, res) {
+
+  // set Cors headers
+  res.setHeader('Access-Control-Allow-Origin', cors_options.allow_origin);
+	res.setHeader('Access-Control-Request-Method', cors_options.request_method);
+	res.setHeader('Access-Control-Allow-Methods', cors_options.allow_methods);
+	res.setHeader('Access-Control-Allow-Headers', cors_options.allow_headers);
+
   // post middleware
   if (req.method == 'POST') {
     req.body = await new Promise((resolve, reject) => {
@@ -27,7 +35,7 @@ const server = Http.createServer(async function (req, res) {
   return res.end()
 })
 
-server.listen(port, function(error) {
+server.listen(PORT, function(error) {
   if (error) {
     console.log({
       status: 505,
@@ -36,5 +44,5 @@ server.listen(port, function(error) {
     return 0;
   }
 
-  console.log('server is listening on *' + port);
+  console.log('server is listening on *' + PORT);
 })
