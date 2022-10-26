@@ -1,21 +1,22 @@
-const users = [
-  // default users
-  { username: "blvckeasy", password: "123456" },
-  { username: "hakim", password: "b1Ui" },
-  { username: "helloworld", password: "randomo1" },
-]
-
 export class UserController {
+  
+  users = [
+    // default users
+    { username: "blvckeasy", password: "123456" },
+    { username: "hakim", password: "b1Ui" },
+    { username: "helloworld", password: "randomo1" },
+  ]
+
   // GET
-  static getUsers (req, res) {
-    res.write(JSON.stringify(users, null, 4));
+  static getUsers (_, res) {
+    res.write(JSON.stringify(this.users, null, 4));
     return { is_response_sended: true }
   }
 
   // POST
   static login (req, res) {
     const { username, password } = req.body
-
+    
     if (!(username && password)) {
       res.write(JSON.stringify({
         status: 200,
@@ -25,7 +26,7 @@ export class UserController {
       return { is_response_sended: true }
     }
     
-    const found_user = users.find((user) => {
+    const found_user = this.users.find((user) => {
       if (user.username == username && user.password == password) {
         return user
       }
@@ -62,7 +63,7 @@ export class UserController {
       return { is_response_sended: true }
     }
 
-    const found_user = users.find((user) => {
+    const found_user = this.users.find((user) => {
       if (user.username == username && user.password == password) {
         return user
       }
@@ -77,7 +78,7 @@ export class UserController {
       }, null, 4));
     } else {
       const new_user = { username, password };
-      users.push(new_user);
+      this.users.push(new_user);
       res.write(JSON.stringify({
         status: 200,
         ok: true,
